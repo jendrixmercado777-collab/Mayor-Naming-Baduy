@@ -323,6 +323,163 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible 
   margin:auto;
   padding-inline:clamp(20px,6vw,86px)
 }
+
+/* Restored gallery-walk interludes */
+.gallery-ticker{display:flex;align-items:center;justify-content:center;gap:clamp(1rem,4vw,4rem);padding:1.15rem 1rem;background:#e9eee6;color:#526555;font:500 .68rem 'DM Mono',monospace;letter-spacing:.12em;text-align:center}
+.gallery-ticker span[aria-hidden=true]{color:#bd8588;font-size:1.05rem}
+.about-section,.compliment-section{padding:clamp(4rem,9vw,8rem) 0;background:#f8f6ef}
+.about-inner{display:grid;grid-template-columns:minmax(4rem,1fr) minmax(0,2fr);gap:clamp(1rem,5vw,5rem);align-items:center;max-width:1000px;margin:auto}
+.about-flower{color:#bd8588;font-size:clamp(4rem,10vw,8rem);text-align:center;animation:about-bloom 5s ease-in-out infinite;transform-origin:center}
+.about-inner h2,.compliment-inner h2{font:500 clamp(2.4rem,6vw,5rem)/.95 'Cormorant Garamond',serif;color:#37443a;letter-spacing:-.03em;margin:.8rem 0 1.2rem}
+.about-inner h2 em,.compliment-inner h2 em{color:#bd8588;font-weight:500}
+.about-inner>div>p:last-child{max-width:52ch;color:#68736a;line-height:1.8}
+.compliment-inner{display:flex;flex-direction:column;align-items:center;text-align:center;max-width:800px;margin:auto}
+.compliment-inner h2{margin-bottom:1.5rem}
+.compliment-message{min-height:3rem;margin:.5rem 0 1.2rem;color:#667365;font:italic 1.35rem 'Cormorant Garamond',serif}
+.compliment-button{border:1px solid #c7cfc2;border-radius:999px;background:#fffdf8;color:#526555;padding:.9rem 1.3rem;font:500 .7rem 'DM Mono',monospace;letter-spacing:.08em;cursor:pointer;transition:transform .2s,background .2s,box-shadow .2s}
+.compliment-button:hover,.compliment-button:focus-visible{transform:translateY(-2px);background:#eef1e9;box-shadow:0 8px 22px #5265551c}
+.compliment-button span{color:#bd8588;margin-left:.35rem}
+.compliment-pop{animation:compliment-appear .42s cubic-bezier(.2,.8,.2,1)}
+@keyframes compliment-appear{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes about-bloom{50%{transform:rotate(7deg) scale(1.05)}}
+@media(max-width:600px){.gallery-ticker{gap:.7rem;font-size:.55rem;letter-spacing:.06em}.about-inner{grid-template-columns:1fr;text-align:center}.about-flower{font-size:3.5rem}.about-inner>div>p:last-child{margin:auto}}
+@media(prefers-reduced-motion:reduce){.about-flower{animation:none}.compliment-pop{animation:none}}
+
+/* Interaction fixes: keep the envelope number clear and the bouquet anchored. */
+.letter-paper-top{position:relative;z-index:2;padding-right:68px;min-height:18px}
+.letter-big-heart{top:48px;right:30px;z-index:1;pointer-events:none}
+.bouquet-stage{height:300px;min-height:300px;overflow:hidden;scroll-margin:0}
+.bouquet-card{overflow:hidden;}
+.bouquet-flower.is-selected .flower-head{filter:drop-shadow(0 4px 7px #7f667044);transform:translateX(-50%) scale(1.14)}
+.party-popper{display:none!important}
+.poppers-confetti{animation-name:popper-confetti-diagonal}
+@keyframes popper-confetti-diagonal{
+  0%{opacity:0;transform:translate(0,0) rotate(0)}
+  14%{opacity:.92}
+  100%{opacity:0;transform:translate(var(--drift-x),var(--drift-y)) rotate(620deg)}
+}
+
+/* Interactive birthday lantern */
+.lantern-card{background:radial-gradient(ellipse at 50% 48%,#fffdf6 0,#f2f3eb 76%);isolation:isolate}
+.birthday-lantern{position:relative;z-index:1;display:grid;place-items:center;width:min(100%,300px);height:218px;margin:0 auto;border:0;background:transparent;cursor:pointer;touch-action:manipulation;transition:transform .35s cubic-bezier(.2,.75,.25,1)}
+.birthday-lantern:hover,.birthday-lantern:focus-visible{transform:translateY(-4px)}
+.birthday-lantern:focus-visible{outline:2px solid var(--rose);outline-offset:3px;border-radius:18px}
+.lantern-scene{position:relative;display:block;width:180px;height:190px;margin:auto;transition:transform .45s cubic-bezier(.2,.75,.25,1)}
+.birthday-lantern:hover .lantern-scene,.birthday-lantern:focus-visible .lantern-scene{transform:rotate(-2deg) scale(1.025)}
+.lantern-glow{position:absolute;z-index:0;left:50%;top:42%;width:156px;height:156px;border-radius:50%;background:radial-gradient(circle,#f4d889a8 0, #eadba25c 38%,transparent 72%);opacity:0;transform:translate(-50%,-50%) scale(.65);transition:opacity .5s,transform .7s}
+.lantern-loop{position:absolute;z-index:1;left:50%;top:3px;width:34px;height:28px;border:3px solid #bda67d;border-bottom:0;border-radius:24px 24px 0 0;transform:translateX(-50%)}
+.lantern-top{position:absolute;z-index:3;left:50%;top:28px;width:108px;height:31px;transform:translateX(-50%);clip-path:polygon(50% 0,100% 100%,0 100%);background:linear-gradient(90deg,#bba57c,#f1e3c1 50%,#bba57c);filter:drop-shadow(0 3px 3px #51463820)}
+.lantern-glass{position:absolute;z-index:2;left:43px;right:43px;top:54px;bottom:32px;border:2px solid #c7b48f;border-radius:24px 24px 18px 18px;background:linear-gradient(100deg,#e8eadb 0,#fffdf3 35%,#f6e8c9 52%,#e7ead9 100%);box-shadow:inset 0 0 20px #fff8dba6,0 7px 14px #5f56301a;overflow:hidden}
+.lantern-glass:after{content:'';position:absolute;inset:10px 8px;border-radius:18px;background:linear-gradient(90deg,transparent,#fff9d585 48%,transparent);opacity:.9}
+.lantern-frame{position:absolute;z-index:4;left:50%;top:55px;bottom:33px;width:94px;border-right:2px solid #bda67d;border-left:2px solid #bda67d;border-radius:18px 18px 10px 10px;transform:translateX(-50%);pointer-events:none}
+.lantern-frame:before,.lantern-frame:after{content:'';position:absolute;left:-8px;right:-8px;height:5px;border-radius:5px;background:linear-gradient(90deg,#b69d72,#f1e2bd 50%,#b69d72)}
+.lantern-frame:before{top:3px}.lantern-frame:after{bottom:2px}
+.lantern-flame{position:absolute;z-index:5;left:50%;top:91px;width:21px;height:34px;clip-path:polygon(50% 0,67% 24%,93% 56%,87% 81%,69% 96%,50% 100%,29% 96%,12% 81%,6% 60%,25% 31%);background:radial-gradient(ellipse at 50% 70%,#fff8ce 0 20%,#f6d77b 47%,#e5a958 76%);opacity:0;filter:drop-shadow(0 0 5px #f3d274);transform:translateX(-50%) scale(.25);transition:opacity .35s,transform .45s}
+.lantern-base{position:absolute;z-index:3;left:50%;bottom:20px;width:120px;height:19px;border:2px solid #bda67d;border-radius:50%;background:linear-gradient(#f5e7c9,#bba47b);box-shadow:0 8px 13px #655a411f;transform:translateX(-50%)}
+.lantern-charm{position:absolute;z-index:5;left:50%;bottom:0;color:#bb8585;font:18px var(--serif);transform:translateX(-50%);text-shadow:0 2px 5px #8e697733}
+.birthday-lantern.is-lit .lantern-glow{opacity:1;transform:translate(-50%,-50%) scale(1.08);animation:lantern-pulse 2.8s ease-in-out infinite alternate}
+.birthday-lantern.is-lit .lantern-flame{opacity:1;transform:translateX(-50%) scale(1);animation:lantern-flicker 1.1s ease-in-out infinite alternate}
+.birthday-lantern.is-lit .lantern-glass{background:linear-gradient(100deg,#f6e9be,#fff7d4 46%,#f8dda1 55%,#f1e7bd);box-shadow:inset 0 0 28px #ffedaa,0 0 22px #eed68c77}
+.lantern-card:has(.birthday-lantern.is-lit){box-shadow:0 0 0 1px #ead8af,0 16px 50px #e8d59d55}
+@keyframes lantern-pulse{to{opacity:.72;transform:translate(-50%,-50%) scale(.9)}}
+@keyframes lantern-flicker{to{filter:drop-shadow(0 0 12px #f3d274);transform:translateX(-50%) scale(.96)}}
+
+/* Layered parallax garden */
+.birthday-garden{isolation:isolate;overflow:hidden}
+.birthday-garden>.section-wrap{position:relative;z-index:1}
+.garden-parallax{position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none}
+.garden-shape,.garden-leaf,.garden-glow{position:absolute;display:block;transform:translate3d(var(--garden-x,0px),var(--garden-y,0px),0);will-change:transform;transition:transform .22s ease-out}
+.garden-shape{color:#bd85882b;font:clamp(80px,14vw,190px) 'Cormorant Garamond',serif;filter:blur(.3px)}
+.garden-shape-left{left:-1%;top:17%}.garden-shape-right{right:0;bottom:8%;color:#8fa08531}
+.garden-leaf{width:120px;height:48px;border-radius:100% 0 100% 0;background:linear-gradient(125deg,#95a78b77,#c5d0b166);filter:blur(.2px)}
+.garden-leaf:after{content:'';position:absolute;left:8%;top:50%;width:86%;height:1px;background:#71866b55;transform:rotate(-17deg);transform-origin:left}
+.garden-leaf-one{left:5%;bottom:17%;rotate:-25deg}.garden-leaf-two{right:8%;top:18%;rotate:155deg;scale:.8}
+.garden-glow{width:clamp(140px,28vw,320px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,#fff8e7a3,transparent 68%);filter:blur(8px)}
+.garden-glow-one{left:28%;top:8%}.garden-glow-two{right:15%;bottom:6%;scale:.75}
+
+/* Responsive glass/depth carousel with fine-pointer tilt */
+.gallery-carousel{perspective:1350px;perspective-origin:50% 48%;transform-style:preserve-3d}
+.card.carousel-slide{transform-style:preserve-3d;backface-visibility:hidden}
+.card.carousel-slide[data-position="active"]{transform:perspective(1100px) rotateX(var(--card-tilt-y,0deg)) rotateY(var(--card-tilt-x,0deg)) translateZ(18px) scale(1);filter:saturate(1.04);transition:opacity .45s,transform .62s cubic-bezier(.2,.75,.25,1),filter .45s,box-shadow .45s}
+.card.carousel-slide[data-position="previous"]{transform:perspective(1100px) rotateY(5deg) translateZ(-28px) scale(.94);filter:blur(.45px) saturate(.82)}
+.card.carousel-slide[data-position="next"]{transform:perspective(1100px) rotateY(-5deg) translateZ(-28px) scale(.94);filter:blur(.45px) saturate(.82)}
+.card-image{position:relative;transform:translateZ(2px)}
+.card-image:after{content:'';position:absolute;inset:0;pointer-events:none;background:linear-gradient(135deg,#ffffff20,transparent 36%,transparent 68%,#1f35200c);opacity:.7;transition:opacity .45s}
+.card[data-position="active"] .card-image:after{opacity:.36}
+@media(max-width:700px){.lantern-scene{scale:.92}.garden-shape{opacity:.65}.garden-leaf{scale:.75}.card.carousel-slide[data-position="previous"],.card.carousel-slide[data-position="next"]{filter:none}}
+@media(prefers-reduced-motion:reduce){.garden-parallax{display:none}.garden-shape,.garden-leaf,.garden-glow{will-change:auto;transition:none}.birthday-lantern.is-lit .lantern-glow,.birthday-lantern.is-lit .lantern-flame{animation:none}.card.carousel-slide[data-position="active"],.card.carousel-slide[data-position="previous"],.card.carousel-slide[data-position="next"]{transform:none!important;filter:none!important}}
+
+/* Login and brief post-login welcome */
+.login-screen{position:fixed;inset:0;z-index:90;display:grid;place-items:center;overflow:auto;padding:28px 18px;background:radial-gradient(ellipse at 18% 16%,#eadfdb 0,transparent 34%),radial-gradient(ellipse at 84% 84%,#e4eadf 0,transparent 38%),#f7f4ed}
+.login-screen:before,.login-screen:after{content:'✿';position:absolute;color:#b77c8066;font:clamp(70px,12vw,150px) 'Cormorant Garamond',serif;pointer-events:none;animation:login-flower-drift 8s ease-in-out infinite}
+.login-screen:before{left:7%;top:10%;rotate:-18deg}.login-screen:after{right:8%;bottom:8%;animation-delay:-4s;rotate:20deg}
+.login-card{position:relative;width:min(100%,440px);padding:clamp(30px,6vw,54px);border:1px solid #e4ded1;background:#fffdf9f2;box-shadow:0 28px 80px #33463820;animation:login-card-in .7s cubic-bezier(.2,.75,.25,1) both}
+.login-card:before{content:'';position:absolute;inset:10px;border:1px solid #eadfd2;pointer-events:none}
+.login-brand{position:relative;display:flex;align-items:center;gap:11px;color:#788176;font:500 9px/1.35 'DM Mono',monospace;letter-spacing:.13em}
+.brand-seal{display:grid;place-items:center;width:36px;height:36px;border:1px solid #c7a4a0;border-radius:50%;color:#a46e72;font:600 13px 'Cormorant Garamond',serif;letter-spacing:0}
+.login-kicker{margin:32px 0 8px;color:#a87578;font:500 9px 'DM Mono',monospace;letter-spacing:.16em}
+.login-card h1{margin:0;color:#34483a;font:500 clamp(40px,9vw,58px)/.95 'Cormorant Garamond',serif}
+.login-intro{margin:13px 0 25px;color:#788176;font:15px/1.55 'DM Sans',sans-serif}
+#login-form{display:grid;gap:9px}
+#login-form label{margin-top:8px;color:#697466;font:500 9px 'DM Mono',monospace;letter-spacing:.12em}
+#login-form input{width:100%;min-height:48px;padding:10px 13px;border:1px solid #dce2d8;border-radius:2px;background:#fffefa;color:#34483a;outline:none;transition:border-color .2s,box-shadow .2s}
+#login-form input:focus{border-color:#b77c80;box-shadow:0 0 0 3px #b77c801c}
+#login-form button,.welcome-card button{display:flex;justify-content:space-between;align-items:center;min-height:48px;margin-top:12px;padding:0 17px;border:0;background:#526b58;color:#fffdf7;font:500 10px 'DM Mono',monospace;letter-spacing:.1em;cursor:pointer;transition:background .2s,transform .2s}
+#login-form button:hover,.welcome-card button:hover{background:#405644;transform:translateY(-2px)}
+.login-error{margin:4px 0;color:#a14e55;font-size:13px}
+.login-footnote{position:relative;margin:25px 0 0;color:#927b73;text-align:center;font:9px 'DM Mono',monospace;letter-spacing:.12em}
+.login-copyright{position:absolute;bottom:18px;left:0;width:100%;color:#758072;text-align:center;font:8px 'DM Mono',monospace;letter-spacing:.16em}
+.welcome-screen{position:fixed;inset:0;z-index:100;display:grid;place-items:center;overflow:hidden;padding:24px;background:radial-gradient(ellipse at 50% 42%,#fffdf8 0,#f3efe5 60%,#e7ece4 100%);text-align:center}
+.welcome-screen:before,.welcome-screen:after{content:'✿';position:absolute;color:#bd858944;font:clamp(100px,22vw,260px) 'Cormorant Garamond',serif;pointer-events:none;animation:welcome-bloom 1.3s ease-out both}
+.welcome-screen:before{left:-3%;top:-9%;rotate:-18deg}.welcome-screen:after{right:-4%;bottom:-12%;animation-delay:.12s;rotate:18deg}
+.welcome-card{position:relative;z-index:1;width:min(100%,600px);padding:clamp(32px,7vw,72px) 24px;background:#fffefaad;animation:welcome-card-in .85s cubic-bezier(.2,.8,.2,1) both}
+.welcome-flower{display:block;margin:0 auto 15px;color:#b77c80;font:42px 'Cormorant Garamond',serif;animation:welcome-flower-turn 3.4s ease-in-out infinite}
+.welcome-kicker{color:#a87578;font:500 9px 'DM Mono',monospace;letter-spacing:.18em}
+.welcome-card h2{margin:14px 0;color:#34483a;font:500 clamp(42px,9vw,76px)/.9 'Cormorant Garamond',serif}
+.welcome-card h2 em{color:#a87578;font-weight:500}
+.welcome-card>p:not(.welcome-kicker){color:#68736a;font:15px/1.7 'DM Sans',sans-serif}
+.welcome-loader{display:flex;justify-content:center;gap:7px;margin:22px auto}
+.welcome-loader i{width:6px;height:6px;border-radius:50%;background:#b77c80;animation:welcome-dot 1s ease-in-out infinite alternate}
+.welcome-loader i:nth-child(2){animation-delay:.18s}.welcome-loader i:nth-child(3){animation-delay:.36s}
+.welcome-card button{width:min(100%,265px);margin:18px auto 0}
+.welcome-footnote{position:absolute;bottom:22px;color:#758072;font:8px 'DM Mono',monospace;letter-spacing:.14em}
+.welcome-screen.is-leaving{animation:welcome-fade-out .42s ease-in both}
+@keyframes login-card-in{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@keyframes login-flower-drift{50%{transform:translateY(-9px) rotate(7deg)}}
+@keyframes welcome-card-in{from{opacity:0;transform:translateY(20px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes welcome-bloom{from{opacity:0;scale:.5}to{opacity:1;scale:1}}
+@keyframes welcome-flower-turn{50%{transform:rotate(12deg) scale(1.06)}}
+@keyframes welcome-dot{to{opacity:.35;transform:translateY(-4px)}}
+@keyframes welcome-fade-out{to{opacity:0;visibility:hidden;transform:scale(1.02)}}
+@media(max-width:520px){.login-screen:before{left:-10%;top:4%}.login-screen:after{right:-10%;bottom:3%}.login-card{padding:34px 25px}.welcome-screen:before{left:-18%;top:-4%}.welcome-screen:after{right:-18%;bottom:-6%}}
+@media(prefers-reduced-motion:reduce){.login-screen:before,.login-screen:after,.login-card,.welcome-screen:before,.welcome-screen:after,.welcome-card,.welcome-flower,.welcome-loader i{animation:none}.welcome-screen.is-leaving{animation:none;opacity:0}}
+
+/* Botanical polish pass */
+.floating-petals,.cursor-petals{position:fixed;inset:0;z-index:4;overflow:hidden;pointer-events:none}
+.ambient-petal{position:absolute;top:-8vh;width:12px;height:17px;border-radius:100% 0 100% 0;background:linear-gradient(145deg,#d9a6a3,#e8d8bc);opacity:.23;filter:blur(.2px);animation:ambient-fall var(--petal-duration,24s) linear var(--petal-delay,0s) infinite}
+@keyframes ambient-fall{0%{transform:translate3d(0,-5vh,0) rotate(0);opacity:0}12%{opacity:.24}88%{opacity:.2}100%{transform:translate3d(var(--petal-drift,20px),110vh,0) rotate(380deg);opacity:0}}
+.cursor-petal{position:fixed;color:#bf8589;font:13px/1 'Cormorant Garamond',serif;transform:translate(-50%,-50%);animation:cursor-petal-fade .85s ease-out forwards}
+@keyframes cursor-petal-fade{to{opacity:0;transform:translate(-50%,-25px) rotate(35deg) scale(.65)}}
+.gallery-section,.birthday-garden,.candle-section,.letters-section{position:relative}
+.gallery-section:before,.birthday-garden:before,.candle-section:before,.letters-section:before{content:'✿  ·  ❀  ·  ✿';position:absolute;top:clamp(18px,3vw,36px);left:50%;transform:translateX(-50%);color:#bf8589;font:13px 'Cormorant Garamond',serif;letter-spacing:.45em;opacity:.68;pointer-events:none}
+.card.carousel-slide{padding:13px 13px 0;background:#fffefa;box-shadow:0 8px 24px #354b3b12}
+.card.carousel-slide[data-position="active"]{padding:14px 14px 0;box-shadow:0 18px 42px #354b3b22,0 0 0 1px #fffefa}
+.card-meta{font:italic 16px 'Cormorant Garamond',serif;letter-spacing:.01em;color:#8e7770}
+.card-meta strong{font:500 8px 'DM Mono',monospace;letter-spacing:.06em}
+.card.carousel-slide[data-position="active"] .card-image{box-shadow:0 2px 10px #493e3014}
+.bouquet-flower{transition:filter .25s ease,scale .25s ease}
+.bouquet-flower:hover,.bouquet-flower:focus-visible,.bouquet-flower.is-selected{scale:1.07;filter:drop-shadow(0 5px 7px #6d826333)}
+.bouquet-flower .flower-head{transform-origin:center bottom;animation:flower-sway 3.6s ease-in-out infinite;animation-delay:var(--flower-delay,0ms)}
+@keyframes flower-sway{0%,100%{rotate:-2deg}50%{rotate:3deg}}
+.letter-dialog.is-opening .letter-big-heart{animation:letter-seal-pop .72s cubic-bezier(.2,.8,.2,1) both}
+@keyframes letter-seal-pop{0%{scale:.55;rotate:-20deg}55%{scale:1.3;rotate:8deg}100%{scale:1;rotate:0}}
+.letter-paper{border:1px solid #efe7d8}
+.letter-paper:before{inset:11px;border-color:#dfcfc0}
+.wish-sparkle{filter:drop-shadow(0 0 7px #e8d59d);text-shadow:0 0 10px #e8d59d}
+@media(hover:none),(pointer:coarse){.cursor-petals{display:none}}
+@media(prefers-reduced-motion:reduce){.floating-petals,.cursor-petals{display:none}.bouquet-flower .flower-head{animation:none}.letter-dialog.is-opening .letter-big-heart{animation:none}}
+@media(max-width:900px){.bouquet-stage{height:235px;min-height:235px}}
+@media(prefers-reduced-motion:reduce){.poppers-confetti{animation:none!important;opacity:0}}
 .section-kicker {
   display:flex;
   justify-content:space-between;
@@ -793,86 +950,14 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible 
   font:25px var(--serif);
   opacity:.55
 }
-.birthday-candle {
-  position:relative;
-  display:block;
-  width:90px;
-  height:150px;
-  margin:0 auto;
-  border:0;
-  background:transparent;
-  cursor:pointer;
-  touch-action:manipulation
-}
-.candle-body {
-  position:absolute;
-  bottom:3px;
-  left:29px;
-  width:33px;
-  height:85px;
-  border-radius:7px 7px 3px 3px;
-  background:repeating-linear-gradient(110deg,#e7cda8 0 9px,#f3e3cb 9px 17px);
-  box-shadow:inset -5px 0 9px #c4ad8e60,0 7px 13px #6e695117
-}
-.candle-body i {
-  position:absolute;
-  top:38px;
-  width:9px;
-  height:9px;
-  border-radius:50%;
-  background:#c9898b
-}
-.candle-body i:nth-child(1) {
-  left:5px
-}
-.candle-body i:nth-child(2) {
-  left:17px;
-  top:24px
-}
-.candle-body i:nth-child(3) {
-  left:20px;
-  top:54px
-}
-.candle-wick {
-  position:absolute;
-  z-index:1;
-  left:44px;
-  top:31px;
-  width:3px;
-  height:14px;
-  border-radius:3px;
-  background:#766856
-}
-.candle-flame {
-  position:absolute;
-  z-index:2;
-  left:37px;
-  top:3px;
-  width:17px;
-  height:27px;
-  border-radius:50% 50% 50% 0;
-  background:#f0c66d;
-  opacity:0;
-  filter:drop-shadow(0 0 18px #f3cd70);
-  transform:rotate(-45deg) scale(.15);
-  transition:transform .3s,opacity .3s
-}
-.birthday-candle.is-lit .candle-flame {
-  opacity:1;
-  transform:rotate(-45deg) scale(1);
-  animation:flame-flicker 1.2s ease-in-out infinite alternate
-}
-.birthday-candle.is-lit .candle-body {
-  box-shadow:inset -5px 0 9px #c4ad8e60,0 0 29px #f1d89370
-}
-.candle-message {
+.wish-message {
   max-width:280px;
   margin:8px 0 0;
   text-align:center;
   color:#748173;
   font:italic 15px var(--serif)
 }
-.candle-sparkle {
+.wish-sparkle {
   position:absolute;
   z-index:4;
   color:#c89d52;
@@ -889,68 +974,29 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible 
 .letters-heading h2 {
   font-size:clamp(45px,6vw,72px)
 }
-.letter-controls {
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:16px;
-  margin-bottom:8px;
-  color:#78877a;
-  font:8px var(--mono);
-  letter-spacing:.07em
-}
-.letter-controls>div {
-  display:flex;
-  gap:8px
-}
-.letter-controls button {
-  width:42px;
-  height:42px;
-  border:1px solid #a8b4a6;
-  border-radius:50%;
-  background:transparent;
-  color:var(--green);
-  font-size:17px;
-  cursor:pointer;
-  transition:background .2s,color .2s
-}
-.letter-controls button:hover {
-  background:var(--green);
-  color:#fff
-}
-.letters-rail {
-  display:flex;
-  gap:18px;
-  overflow-x:auto;
-  scroll-snap-type:x mandatory;
-  scroll-behavior:smooth;
-  padding:16px max(6vw,calc((100vw - 1020px)/2)) 30px;
-  margin:0 -6vw;
-  scrollbar-width:thin;
-  scrollbar-color:#bfcebd transparent
-}
-.letters-rail:empty {
-  display:none
-}
+.letter-count {margin:0 0 12px;color:#78877a;font:8px var(--mono);letter-spacing:.07em}
+.letters-grid {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;width:100%;padding:16px 0 30px;}
+.envelope-slot {position:relative;min-width:0;height:clamp(170px,17vw,222px);}
+.envelope-placeholder {border:1px dashed #c9c9b9;background:#f7f6f0;opacity:.76;}
+.envelope-placeholder .envelope-face {inset:8px;background:#f1efe6;border:1px dashed #d6d3c5;box-shadow:none;}
+.envelope-placeholder .envelope-face:before,.envelope-placeholder .envelope-face:after {background:#eeece3;border-color:#dedbce;}
+.envelope-placeholder .envelope-flap {background:#f7f5ee;border-bottom:1px dashed #d6d3c5;}
+.envelope-placeholder .envelope-heart {background:transparent;color:#b89b9a;border:1px solid #c9b1af;box-shadow:none;}
+.envelope-placeholder .envelope-label {color:#8e9b8d;}
+.envelope-card {width:100%;height:100%;}
+.envelope-card:focus-visible {outline:3px solid #657b68;outline-offset:3px;border-radius:2px;}
 .envelope-card {
   position:relative;
-  flex:0 0 clamp(245px,29vw,325px);
-  height:222px;
-  scroll-snap-align:center;
   border:0;
   padding:0;
   background:transparent;
   text-align:left;
   cursor:pointer;
-  opacity:.45;
-  transform:scale(.95);
-  transition:opacity .3s,transform .3s,filter .3s
-}
-.envelope-card.is-active,.envelope-card:hover,.envelope-card:focus-visible {
   opacity:1;
-  transform:scale(1);
-  filter:none
+  transform:none;
+  transition:filter .3s
 }
+.envelope-card:hover,.envelope-card:focus-visible {filter:brightness(1.025)}
 .envelope-face {
   position:absolute;
   inset:17px 7px 19px;
@@ -1567,17 +1613,6 @@ to {
 }
 
 }
-@keyframes flame-flicker {
-  from {
-  filter:drop-shadow(0 0 11px #f3cd70);
-  scale:1
-}
-to {
-  filter:drop-shadow(0 0 22px #f3cd70);
-  scale:.92 1.05
-}
-
-}
 @keyframes sparkle-rise {
   0% {
   opacity:0;
@@ -1708,9 +1743,6 @@ to {
 }
 .candle-layout {
   gap:6vw
-}
-.letters-rail {
-  margin-inline:-5vw
 }
 
 }
@@ -1914,12 +1946,12 @@ to {
   height:235px
 }
 .bouquet-stage:after {
-  width:min(42%,175px);
-  height:77px;
-  bottom:-12px
+  width:clamp(138px,19%,165px);
+  height:74px;
+  bottom:-4px
 }
 .bouquet-flower {
-  height:165px
+  height:158px
 }
 .bouquet-flower .flower-head {
   font-size:34px
@@ -1959,15 +1991,6 @@ to {
   height:220px;
   right:-60px;
   top:34%
-}
-.letters-rail {
-  gap:12px;
-  margin-inline:-7vw;
-  padding-inline:7vw
-}
-.envelope-card {
-  flex-basis:78vw;
-  height:205px
 }
 .letter-form {
   padding:19px 16px
@@ -2066,6 +2089,7 @@ footer>span {
   animation-iteration-count:1!important;
   transition-duration:.01ms!important
 }
+
 .motion-ready .reveal-ready,.motion-ready .reveal-ready.is-revealed {
   opacity:1;
   transform:none;
@@ -2077,5 +2101,83 @@ footer>span {
 .confetti,.party-poppers,.surprise-petal,.surprise-confetti {
   display:none!important
 }
+.confetti.poppers-confetti{display:block!important;opacity:.78!important;animation:none!important}
 
 }
+
+/* Keep the birthday burst visible: these overrides follow the legacy fall rules. */
+.confetti.poppers-confetti{
+  position:fixed;
+  z-index:60;
+  top:var(--launch-y,78vh);
+  width:9px;
+  height:13px;
+  opacity:0;
+  animation:popper-confetti-diagonal 1.9s cubic-bezier(.15,.75,.3,1) var(--launch-delay,0s) forwards;
+  will-change:transform,opacity;
+}
+.party-popper{display:none!important}
+@keyframes popper-confetti-diagonal{
+  0%{opacity:0;transform:translate3d(0,0,0) rotate(0deg)}
+  12%{opacity:.96}
+  100%{opacity:0;transform:translate3d(var(--drift-x),var(--drift-y),0) rotate(620deg)}
+}
+
+/* Final carousel depth overrides: keep the 3D states after legacy carousel rules. */
+.card.carousel-slide[data-position="active"]{transform:perspective(1100px) rotateX(var(--card-tilt-y,0deg)) rotateY(var(--card-tilt-x,0deg)) translateZ(18px) scale(1);filter:saturate(1.04);transition:opacity .45s,transform .62s cubic-bezier(.2,.75,.25,1),filter .45s,box-shadow .45s}
+.card.carousel-slide[data-position="previous"]{transform:perspective(1100px) rotateY(5deg) translateZ(-28px) scale(.94);filter:blur(.45px) saturate(.82)}
+.card.carousel-slide[data-position="next"]{transform:perspective(1100px) rotateY(-5deg) translateZ(-28px) scale(.94);filter:blur(.45px) saturate(.82)}
+@media(prefers-reduced-motion:reduce){.card.carousel-slide[data-position="active"],.card.carousel-slide[data-position="previous"],.card.carousel-slide[data-position="next"]{transform:none!important;filter:none!important;transition:none!important}}
+
+/* Layout corrections for the carousel, hero snapshots, and letter rail. */
+.carousel-viewport{position:relative;}
+.gallery-carousel{position:relative;margin-inline:0;}
+.card.carousel-slide[data-position="previous"],.card.carousel-slide[data-position="next"]{transform:perspective(1300px) translateZ(-24px) scale(.93);filter:saturate(.86);}
+.card.carousel-slide[data-position="previous"]{transform-origin:right center;}
+.card.carousel-slide[data-position="next"]{transform-origin:left center;}
+.hero-art .photo-front{left:8%;top:9%;width:58%;height:82%;}
+.hero-art .photo-back{right:5%;top:5%;width:50%;height:68%;}
+.hero-art .photo img{object-fit:cover;object-position:center 38%;}
+@media(prefers-reduced-motion:reduce){.card.carousel-slide[data-position="previous"],.card.carousel-slide[data-position="next"]{transform:none!important;}}
+
+/* Keep the pot and flower stems in one compact, centered bouquet at every width. */
+.bouquet-stage:after{width:clamp(138px,19%,170px);height:76px;bottom:-8px;}
+.bouquet-flower{height:165px;}
+
+/* Compact three-column letter grid: keep all envelope slots visible at every width. */
+@media(max-width:620px){
+  .letters-grid{gap:8px;padding-block:10px 22px;}
+  .envelope-slot{height:clamp(100px,28vw,122px);}
+  .envelope-card{transform:none;opacity:1;}
+  .envelope-face{inset:12px 3px 18px;}
+  .envelope-heart{width:25px;height:25px;font-size:13px;}
+  .envelope-index{top:0;right:3px;font-size:5px;}
+  .envelope-label{left:5px;right:5px;bottom:5px;display:grid;gap:2px;font-size:6px;letter-spacing:0;}
+  .envelope-label strong{font-size:4.5px;white-space:nowrap;}
+  .envelope-label span{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .envelope-placeholder .envelope-face{inset:4px;}
+}
+.card.carousel-slide[data-position="active"]{opacity:1;visibility:visible;}
+.card.carousel-slide[data-position="previous"]{transform:perspective(1300px) rotateY(5deg) translateZ(-24px) scale(.93);filter:saturate(.84);}
+.card.carousel-slide[data-position="next"]{transform:perspective(1300px) rotateY(-5deg) translateZ(-24px) scale(.93);filter:saturate(.84);}
+.card.carousel-slide[data-position="previous"]{transform-origin:right center;}
+.card.carousel-slide[data-position="next"]{transform-origin:left center;}
+/* Keep perspective local to each card; applying it to the full photo track
+   (which spans every gallery image) pushes the active card off-center. */
+.gallery-carousel{perspective:none;perspective-origin:50% 50%;transform-style:flat;}
+.card-image img{display:block;width:100%;height:100%;object-fit:cover;object-position:center;}
+@media(prefers-reduced-motion:reduce){.card.carousel-slide[data-position="previous"],.card.carousel-slide[data-position="next"]{transform:none!important;}}
+
+/* Fine celebratory glints and a one-time, low-key closing shower. */
+.sparkle-hover{position:relative;}
+.sparkle-hover:after{content:'✧';position:absolute;z-index:8;top:0;right:0;color:#bd8588;font:16px/1 'Cormorant Garamond',serif;text-shadow:0 1px 8px #d9b2788c;opacity:0;transform:translate(25%,-35%) scale(.45) rotate(-24deg);pointer-events:none;}
+.sparkle-hover:hover:after,.sparkle-hover:focus-visible:after{animation:sparkle-glint .78s cubic-bezier(.2,.8,.2,1) both;}
+@keyframes sparkle-glint{0%{opacity:0;transform:translate(25%,-35%) scale(.4) rotate(-24deg)}32%{opacity:1;transform:translate(0,0) scale(1.25) rotate(12deg)}100%{opacity:.76;transform:translate(0,0) scale(1) rotate(0)}}
+.closing-confetti{position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none;}
+.closing> :not(.closing-confetti){position:relative;z-index:1;}
+.closing-particle{position:absolute;top:-18px;width:7px;height:10px;border-radius:1px;background:#c77f85;opacity:0;animation:closing-drift var(--particle-duration,5s) ease-in var(--particle-delay,0s) both;}
+.closing-particle:nth-child(3n){background:#d3b875;}
+.closing-particle:nth-child(3n + 2){background:#9aab94;}
+.closing-particle.closing-petal{width:9px;height:13px;border-radius:100% 0 100% 0;background:linear-gradient(145deg,#d9a6a3,#e8d8bc);}
+@keyframes closing-drift{0%{opacity:0;transform:translate3d(0,-16px,0) rotate(0) scale(.72)}16%{opacity:.34}82%{opacity:.3}100%{opacity:0;transform:translate3d(var(--particle-drift,0),260px,0) rotate(250deg) scale(1)}}
+@media(prefers-reduced-motion:reduce){.closing-particle,.sparkle-hover:after{display:none!important;animation:none!important}}

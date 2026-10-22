@@ -132,7 +132,10 @@ function updateCarousel() {
     slide.setAttribute('aria-hidden', String(Math.abs(offset) > 1));
   });
   const active = slides[activeCarouselIndex];
-  const centerOffset = (viewport.clientWidth - active.clientWidth) / 2 - active.offsetLeft;
+  // Position from untransformed layout coordinates so 3D slide effects cannot
+  // skew the active card's center calculation or accumulate carousel drift.
+  const activeCenter = grid.offsetLeft + active.offsetLeft + active.offsetWidth / 2;
+  const centerOffset = viewport.clientWidth / 2 - activeCenter;
   grid.style.transform = `translate3d(${centerOffset}px,0,0)`;
   previousButton.disabled = slides.length < 2;
   nextButton.disabled = slides.length < 2;
@@ -297,23 +300,49 @@ function celebrate() {
     clearTimeout(popperTimer);
     popperTimer = setTimeout(() => poppersLayer.classList.remove('is-firing'), 1700);
   }
-  if (motionPreference.matches) return;
   const colors = ['#c77f85', '#e8d59d', '#82958b', '#faf8f1', '#a5b89d'];
-  const amount = 32;
+  const amount = motionPreference.matches ? 12 : 32;
   for (let i = 0; i < amount; i++) {
     const piece = document.createElement('i');
     piece.className = 'confetti';
     const side = i % 2 === 0 ? 0 : 1;
-    piece.style.left = `${side ? 87 + Math.random() * 10 : Math.random() * 10}vw`;
+    // Launch just beyond the viewport edge so the confetti appears to enter from offscreen.
+    piece.style.left = side ? `${100 + Math.random() * 4}vw` : `${-4 + Math.random() * 4}vw`;
+    piece.style.top = `${78 + Math.random() * 12}vh`;
     piece.classList.add('poppers-confetti');
     piece.style.background = colors[i % colors.length];
     piece.style.setProperty('--duration', `${2 + Math.random() * 2.6}s`);
-    piece.style.setProperty('--drift', `${Math.random() * 240 - 120}px`);
+    // Scale the inward travel to the viewport so launches from either offscreen edge enter view.
+    const diagonal = window.innerWidth * (.22 + Math.random() * .20);
+    piece.style.setProperty('--drift-x', `${side ? -diagonal : diagonal}px`);
+    piece.style.setProperty('--drift-y', `${-(window.innerHeight * (.42 + Math.random() * .22))}px`);
+    if (motionPreference.matches) piece.style.setProperty('--launch-delay', '0s');
     piece.style.animationDelay = `${Math.random() * .8}s`;
     document.body.append(piece);
-    setTimeout(() => piece.remove(), 5600);
+    setTimeout(() => piece.remove(), motionPreference.matches ? 1800 : 3200);
   }
 }
+
+const clubCompliments = [
+  'You make people feel welcome just by being yourself.',
+  'Your laugh is one of our favorite things about the club.',
+  'You bring a little more joy into every room you enter.',
+  'You deserve all the kindness you so freely give everyone else.',
+  'The club is brighter with you in it, Mayor Naming Baduy.',
+  'You turn ordinary memories into the ones we keep forever.'
+];
+let previousCompliment = -1;
+document.querySelector('#compliment-button')?.addEventListener('click', () => {
+  let next = Math.floor(Math.random() * clubCompliments.length);
+  if (clubCompliments.length > 1 && next === previousCompliment) next = (next + 1) % clubCompliments.length;
+  previousCompliment = next;
+  const message = document.querySelector('#compliment-message');
+  message.classList.remove('compliment-pop');
+  void message.offsetWidth;
+  message.textContent = clubCompliments[next];
+  message.classList.add('compliment-pop');
+  playEffect('kind');
+});
 document.querySelector('#party-button').addEventListener('click', celebrate);
 
 const progress = document.querySelector('#progress-bar');
@@ -325,67 +354,71 @@ window.addEventListener('scroll', () => {
 // Add a song in assets/music/ and replace this path with its filename.
 const LETTER_MUSIC = 'assets/music/hb128.mp3';
 const LETTER_STORAGE_KEY = 'mayorNamingBaduyLetters';
-const lettersRail = document.querySelector('#letters-rail');
+const lettersGrid = document.querySelector('#letters-grid');
 const letterDialog = document.querySelector('#letter-dialog');
 const letterAudio = document.querySelector('#letter-music');
 const musicToggle = document.querySelector('#music-toggle');
 letterAudio.src = LETTER_MUSIC;
 let birthdayLetters = [];
+let letterOpening = false;
 try {
-  birthdayLetters = JSON.parse(localStorage.getItem(LETTER_STORAGE_KEY) || '[]');
-  if (!Array.isArray(birthdayLetters)) birthdayLetters = [];
+  const storedLetters = JSON.parse(localStorage.getItem(LETTER_STORAGE_KEY) || '[]');
+  birthdayLetters = Array.isArray(storedLetters) ? storedLetters.filter(letter =>
+    letter && typeof letter.sender === 'string' && typeof letter.message === 'string' &&
+    letter.sender.trim() && letter.message.trim()
+  ).map(letter => ({ ...letter, sender: letter.sender.trim().slice(0, 50), message: letter.message.trim().slice(0, 1200) })) : [];
 } catch { birthdayLetters = []; }
 
 function renderLetters() {
-  lettersRail.replaceChildren();
-  birthdayLetters.forEach((letter, index) => {
-    const card = document.createElement('button');
-    card.className = 'envelope-card';
-    card.type = 'button';
-    card.setAttribute('aria-label', `Open birthday letter ${index + 1} from ${letter.sender}`);
-    card.innerHTML = `<span class="envelope-face"><span class="envelope-flap"></span><span class="envelope-heart" aria-hidden="true">♥</span></span><span class="envelope-index">NO. ${String(index + 1).padStart(3, '0')}</span><span class="envelope-label"><strong>TO MAYOR NAMING BADUY</strong><span>FROM ${escapeText(letter.sender)}</span></span>`;
-    card.addEventListener('click', () => openLetter(index));
-    lettersRail.append(card);
-  });
+  lettersGrid.replaceChildren();
+  // Keep one full row open; a new row appears as soon as the previous row fills.
+  const slotCount = Math.max(3, Math.ceil((birthdayLetters.length + 1) / 3) * 3);
+  const fragment = document.createDocumentFragment();
+  for (let slotIndex = 0; slotIndex < slotCount; slotIndex += 1) {
+    const slot = document.createElement('div');
+    slot.className = 'envelope-slot';
+    slot.setAttribute('role', 'listitem');
+    if (slotIndex >= birthdayLetters.length) {
+      slot.classList.add('envelope-placeholder');
+      slot.setAttribute('aria-label', `Empty envelope slot ${slotIndex + 1}. Leave a note below to fill it.`);
+      slot.innerHTML = `<span class="envelope-face"><span class="envelope-flap"></span><span class="envelope-heart" aria-hidden="true">♡</span></span><span class="envelope-index">NO. ${String(slotIndex + 1).padStart(3, '0')}</span><span class="envelope-label"><strong>WAITING FOR A NOTE</strong><span>EMPTY ENVELOPE</span></span>`;
+    } else {
+      const letter = birthdayLetters[slotIndex];
+      const card = document.createElement('button');
+      card.className = 'envelope-card';
+      card.type = 'button';
+      card.setAttribute('aria-label', `Open birthday letter ${slotIndex + 1} from ${letter.sender}`);
+      card.innerHTML = `<span class="envelope-face"><span class="envelope-flap"></span><span class="envelope-heart" aria-hidden="true">♥</span></span><span class="envelope-index">NO. ${String(slotIndex + 1).padStart(3, '0')}</span><span class="envelope-label"><strong>TO MAYOR NAMING BADUY</strong><span>FROM ${escapeText(letter.sender)}</span></span>`;
+      card.addEventListener('click', () => openLetter(slotIndex));
+      slot.append(card);
+    }
+    fragment.append(slot);
+  }
+  lettersGrid.append(fragment);
   document.querySelector('#letter-count').textContent = `${birthdayLetters.length} ${birthdayLetters.length === 1 ? 'LETTER' : 'LETTERS'} IN THE BOX`;
   document.querySelector('#letters-empty').hidden = birthdayLetters.length > 0;
-  if (birthdayLetters.length && !lettersRail.dataset.initialized) {
-    lettersRail.dataset.initialized = 'true';
-    const first = lettersRail.firstElementChild;
-    lettersRail.scrollLeft = Math.max(0, first.offsetLeft - (lettersRail.clientWidth - first.offsetWidth) / 2);
-  }
-  updateFocusedEnvelope();
 }
 function escapeText(value) {
   return String(value).replace(/[&<>"']/g, character => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[character]);
 }
-function updateFocusedEnvelope() {
-  const cards = [...lettersRail.querySelectorAll('.envelope-card')];
-  if (!cards.length) return;
-  const railCenter = lettersRail.getBoundingClientRect().left + lettersRail.clientWidth / 2;
-  let closest = null;
-  let closestDistance = Infinity;
-  cards.forEach(card => {
-    const rect = card.getBoundingClientRect();
-    const distance = Math.abs(rect.left + rect.width / 2 - railCenter);
-    if (distance < closestDistance) { closest = card; closestDistance = distance; }
-  });
-  cards.forEach(card => card.classList.toggle('is-active', card === closest));
-}
 function openLetter(index) {
   const letter = birthdayLetters[index];
-  if (!letter || letterDialog.open) return;
+  if (!letter || letterDialog.open || letterOpening) return;
+  letterOpening = true;
   document.querySelector('#open-letter-number').textContent = `NO. ${String(index + 1).padStart(3, '0')}`;
   document.querySelector('#open-letter-body').textContent = letter.message;
   document.querySelector('#open-letter-sender').textContent = letter.sender;
   document.querySelector('#open-letter-from').textContent = letter.sender;
   document.querySelector('#surprise-hint').hidden = true;
   recordLetterRead(index);
-  const envelope = lettersRail.children[index];
+  const envelope = lettersGrid.children[index]?.querySelector('.envelope-card');
   envelope?.classList.add('is-opening');
   setTimeout(() => {
     envelope?.classList.remove('is-opening');
+    letterDialog.classList.add('is-opening');
     letterDialog.showModal();
+    letterOpening = false;
+    setTimeout(() => letterDialog.classList.remove('is-opening'), 900);
     playEffect('letter');
     syncAutoplayControl();
     updateMusicButton();
@@ -401,19 +434,21 @@ document.querySelector('#letter-form').addEventListener('submit', event => {
   const formData = new FormData(event.currentTarget);
   const sender = String(formData.get('sender') || '').trim();
   const message = String(formData.get('message') || '').trim();
-  if (!sender || !message) return;
+  if (!sender || !message) {
+    const invalidField = !sender ? document.querySelector('#sender-name') : document.querySelector('#message-text');
+    invalidField.setCustomValidity('Enter a name and a message with at least one non-space character.');
+    invalidField.reportValidity();
+    return;
+  }
   birthdayLetters.push({ sender: sender.slice(0, 50), message: message.slice(0, 1200), createdAt: new Date().toISOString() });
   try { localStorage.setItem(LETTER_STORAGE_KEY, JSON.stringify(birthdayLetters)); }
   catch { birthdayLetters.pop(); window.alert('This browser could not save the letter. Please check its storage settings and try again.'); return; }
   event.currentTarget.reset();
   renderLetters();
-  const newest = lettersRail.lastElementChild;
-  newest?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
   playEffect('letter');
 });
-document.querySelector('#letters-left').addEventListener('click', () => lettersRail.scrollBy({ left: -320, behavior: 'smooth' }));
-document.querySelector('#letters-right').addEventListener('click', () => lettersRail.scrollBy({ left: 320, behavior: 'smooth' }));
-lettersRail.addEventListener('scroll', () => requestAnimationFrame(updateFocusedEnvelope), { passive: true });
+document.querySelector('#sender-name').addEventListener('input', event => event.currentTarget.setCustomValidity(''));
+document.querySelector('#message-text').addEventListener('input', event => event.currentTarget.setCustomValidity(''));
 document.querySelector('#letter-close').addEventListener('click', () => letterDialog.close());
 letterDialog.addEventListener('click', event => { if (event.target === letterDialog) letterDialog.close(); });
 letterDialog.addEventListener('close', () => {
@@ -438,6 +473,24 @@ const LOGIN_USERNAME = 'mayor';
 const LOGIN_PASSWORD = 'baduy2026';
 const LOGIN_SESSION_KEY = 'mayorNamingBaduySignedIn';
 const loginScreen = document.querySelector('#login-screen');
+const welcomeScreen = document.querySelector('#welcome-screen');
+const welcomeContinue = document.querySelector('#welcome-continue');
+let welcomeTimer;
+function finishWelcome() {
+  if (welcomeScreen.hidden) return;
+  clearTimeout(welcomeTimer);
+  welcomeScreen.classList.add('is-leaving');
+  setTimeout(() => {
+    welcomeScreen.hidden = true;
+    welcomeScreen.classList.remove('is-leaving');
+    document.body.classList.add('site-reveal');
+    document.querySelector('#hero-title')?.focus({ preventScroll: true });
+    syncAutoplayControl();
+    celebrate();
+    setTimeout(() => document.body.classList.remove('site-reveal'), 1300);
+  }, motionPreference.matches ? 0 : 420);
+}
+welcomeContinue.addEventListener('click', finishWelcome);
 try {
   if (sessionStorage.getItem(LOGIN_SESSION_KEY) === 'yes') {
     loginScreen.hidden = true;
@@ -458,10 +511,9 @@ document.querySelector('#login-form').addEventListener('submit', event => {
   try { sessionStorage.setItem(LOGIN_SESSION_KEY, 'yes'); } catch { /* Continue for this page view. */ }
   loginScreen.hidden = true;
   document.body.classList.remove('login-locked');
-  document.body.classList.add('site-reveal');
-  syncAutoplayControl();
-  celebrate();
-  setTimeout(() => document.body.classList.remove('site-reveal'), 1300);
+  welcomeScreen.hidden = false;
+  welcomeContinue.focus({ preventScroll: true });
+  welcomeTimer = setTimeout(finishWelcome, motionPreference.matches ? 1500 : 2600);
 });
 
 // Surprise reveal settings: pick any image already in assets/gallery/.
@@ -510,7 +562,8 @@ const flowerStyles = [
   { symbol: '✾', color: '#9a83ad' }, { symbol: '❁', color: '#c88669' },
   { symbol: '✽', color: '#d08c9d' }, { symbol: '✿', color: '#d8bd70' }
 ];
-const flowerPositions = [50, 43, 57, 40, 60, 46, 54, 42, 58, 45, 55, 48, 52, 41, 59, 44, 56, 47, 53, 40, 60, 43, 57, 50];
+// Keep each stem within the narrower pot opening, even after its small tilt.
+const flowerPositions = [50, 47, 53, 48, 52, 46, 54, 49, 51, 47, 53, 48, 52, 46, 54, 49, 51, 47, 53, 48, 52, 46, 54, 50];
 function renderBouquet() {
   const stage = document.querySelector('#bouquet-stage');
   const visibleWishes = birthdayWishes.slice(-24);
@@ -520,7 +573,7 @@ function renderBouquet() {
     const style = flowerStyles[index % flowerStyles.length];
     const flower = document.createElement('button');
     flower.type = 'button';
-    flower.className = 'bouquet-flower';
+    flower.className = 'bouquet-flower sparkle-hover';
     flower.style.setProperty('--flower-x', `${flowerPositions[positionIndex]}%`);
     flower.style.setProperty('--flower-y', `${25 + (index % 3) * 11}%`);
     flower.style.setProperty('--flower-tilt', `${(index % 5 - 2) * 4}deg`);
@@ -537,7 +590,8 @@ function renderBouquet() {
     flower.append(stem, bloom);
     flower.addEventListener('click', () => {
       document.querySelector('#bouquet-note-copy').textContent = `${wish.name}: “${wish.wish}”`;
-      flower.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' });
+      stage.querySelectorAll('.bouquet-flower.is-selected').forEach(item => item.classList.remove('is-selected'));
+      flower.classList.add('is-selected');
       playEffect('flower');
     });
     stage.append(flower);
@@ -566,13 +620,13 @@ document.querySelector('#wish-form').addEventListener('submit', event => {
 });
 renderBouquet();
 
-let candleLit = false;
-function spawnCandleSparkles() {
+let lanternLit = false;
+function spawnLanternSparkles() {
   if (motionPreference.matches) return;
   const card = document.querySelector('.candle-card');
   for (let index = 0; index < 9; index++) {
     const sparkle = document.createElement('span');
-    sparkle.className = 'candle-sparkle';
+    sparkle.className = 'wish-sparkle';
     sparkle.setAttribute('aria-hidden', 'true');
     sparkle.textContent = index % 2 ? '✧' : '✦';
     sparkle.style.left = `${35 + Math.random() * 30}%`;
@@ -584,16 +638,16 @@ function spawnCandleSparkles() {
     setTimeout(() => sparkle.remove(), 1500);
   }
 }
-document.querySelector('#birthday-candle').addEventListener('click', event => {
-  candleLit = !candleLit;
-  const candle = event.currentTarget;
-  candle.classList.toggle('is-lit', candleLit);
-  candle.setAttribute('aria-pressed', String(candleLit));
-  candle.setAttribute('aria-label', candleLit ? 'Blow out the birthday candle' : 'Light the birthday candle');
-  document.querySelector('#candle-message').textContent = candleLit
+document.querySelector('#birthday-lantern').addEventListener('click', event => {
+  lanternLit = !lanternLit;
+  const lantern = event.currentTarget;
+  lantern.classList.toggle('is-lit', lanternLit);
+  lantern.setAttribute('aria-pressed', String(lanternLit));
+  lantern.setAttribute('aria-label', lanternLit ? 'Dim the birthday lantern' : 'Light the birthday lantern');
+  document.querySelector('#lantern-message').textContent = lanternLit
     ? 'Your wish is glowing. Happy birthday, Mayor Naming Baduy!'
-    : 'The candle is resting. Tap to make another wish.';
-  if (candleLit) spawnCandleSparkles();
+    : 'The lantern is resting. Tap it to make another wish.';
+  if (lanternLit) spawnLanternSparkles();
   playEffect('candle');
 });
 
@@ -653,10 +707,40 @@ function spawnRevealConfetti(count) {
   }
 }
 
-document.addEventListener('visibilitychange', syncAutoplayControl);
+// Sparse ambient petals and a mouse-only petal trail; both stay decorative and non-interactive.
+const floatingPetalLayer = document.querySelector('#floating-petals');
+if (floatingPetalLayer && !motionPreference.matches) {
+  const petalCount = window.matchMedia('(max-width: 700px)').matches ? 5 : 9;
+  for (let index = 0; index < petalCount; index++) {
+    const petal = document.createElement('i');
+    petal.className = 'ambient-petal';
+    petal.style.left = `${5 + Math.random() * 90}%`;
+    petal.style.setProperty('--petal-delay', `${-Math.random() * 24}s`);
+    petal.style.setProperty('--petal-duration', `${18 + Math.random() * 15}s`);
+    petal.style.setProperty('--petal-drift', `${Math.random() * 90 - 45}px`);
+    floatingPetalLayer.append(petal);
+  }
+}
+const cursorPetalLayer = document.querySelector('#cursor-petals');
+const finePointer = window.matchMedia('(pointer:fine)').matches;
+let cursorPetalTime = 0;
+if (cursorPetalLayer && finePointer && !motionPreference.matches) {
+  document.addEventListener('pointermove', event => {
+    const now = performance.now();
+    if (now - cursorPetalTime < 125 || event.pointerType === 'touch') return;
+    cursorPetalTime = now;
+    const petal = document.createElement('i');
+    petal.className = 'cursor-petal';
+    petal.textContent = Math.random() > .5 ? '✿' : '·';
+    petal.style.left = `${event.clientX}px`;
+    petal.style.top = `${event.clientY}px`;
+    cursorPetalLayer.append(petal);
+    setTimeout(() => petal.remove(), 850);
+  }, { passive: true });
+}
 
 document.documentElement.classList.add('motion-ready');
-const revealTargets = document.querySelectorAll('.hero-copy,.hero-art,.section-kicker,.gallery-heading,.carousel-shell,.carousel-footer,.garden-heading,.bouquet-card,.candle-layout,.letters-heading,.letter-controls,.letter-form,.closing');
+const revealTargets = document.querySelectorAll('.hero-copy,.hero-art,.section-kicker,.about-inner,.gallery-heading,.carousel-shell,.carousel-footer,.compliment-inner,.garden-heading,.bouquet-card,.candle-layout,.letters-heading,.letter-count,.letter-form,.closing');
 if ('IntersectionObserver' in window) {
   const sectionRevealObserver = new IntersectionObserver(entries => entries.forEach(entry => {
     if (!entry.isIntersecting) return;
@@ -669,3 +753,79 @@ if ('IntersectionObserver' in window) {
     sectionRevealObserver.observe(target);
   });
 } else revealTargets.forEach(target => target.classList.add('is-revealed'));
+
+// Brief decorative glints on important controls, headings, and interactive blooms.
+document.querySelectorAll('#party-button,#compliment-button,#birthday-lantern,.wish-form button,.form-submit button,.gallery-heading h2,.compliment-inner h2,.garden-heading h2,.letters-heading h2,.closing h2')
+  .forEach(target => target.classList.add('sparkle-hover'));
+
+// A single light shower greets visitors when they reach the birthday message.
+const closingConfettiLayer = document.querySelector('#closing-confetti');
+if (closingConfettiLayer && !motionPreference.matches && 'IntersectionObserver' in window) {
+  const closingConfettiObserver = new IntersectionObserver(entries => {
+    if (!entries.some(entry => entry.isIntersecting)) return;
+    closingConfettiObserver.disconnect();
+    for (let index = 0; index < 18; index += 1) {
+      const particle = document.createElement('i');
+      particle.className = index % 3 === 0 ? 'closing-particle closing-petal' : 'closing-particle';
+      particle.style.left = `${4 + Math.random() * 92}%`;
+      particle.style.setProperty('--particle-delay', `${Math.random() * 1.8}s`);
+      particle.style.setProperty('--particle-duration', `${4.2 + Math.random() * 2.2}s`);
+      particle.style.setProperty('--particle-drift', `${Math.random() * 70 - 35}px`);
+      closingConfettiLayer.append(particle);
+    }
+  }, { threshold: .35 });
+  const closingSection = document.querySelector('.closing');
+  if (closingSection) closingConfettiObserver.observe(closingSection);
+}
+
+// Layered garden depth: small scroll and pointer offsets keep the scene dimensional but calm.
+const garden = document.querySelector('#birthday-garden');
+const gardenLayers = [...document.querySelectorAll('.garden-parallax [data-depth]')];
+let gardenFrame = 0;
+function updateGardenParallax(pointerX = 0, pointerY = 0) {
+  if (motionPreference.matches || !garden) return;
+  cancelAnimationFrame(gardenFrame);
+  gardenFrame = requestAnimationFrame(() => {
+    const bounds = garden.getBoundingClientRect();
+    gardenLayers.forEach(layer => {
+      const depth = Number(layer.dataset.depth) || .1;
+      const scrollOffset = Math.max(-50, Math.min(50, -bounds.top * depth * .07));
+      layer.style.setProperty('--garden-x', `${pointerX * depth * 13}px`);
+      layer.style.setProperty('--garden-y', `${scrollOffset + pointerY * depth * 10}px`);
+    });
+  });
+}
+window.addEventListener('scroll', () => updateGardenParallax(), { passive: true });
+if (window.matchMedia('(pointer:fine)').matches) {
+  garden?.addEventListener('pointermove', event => {
+    const bounds = garden.getBoundingClientRect();
+    updateGardenParallax((event.clientX - bounds.left) / bounds.width - .5, (event.clientY - bounds.top) / bounds.height - .5);
+  }, { passive: true });
+  garden?.addEventListener('pointerleave', () => updateGardenParallax(), { passive: true });
+}
+updateGardenParallax();
+
+// Give the active carousel print a little perspective tilt on mouse/pen only.
+if (window.matchMedia('(pointer:fine)').matches && !motionPreference.matches) {
+  carouselViewport.addEventListener('pointermove', event => {
+    const card = event.target.closest('.carousel-slide[data-position="active"]');
+    if (!card) {
+      carouselViewport.querySelectorAll('.carousel-slide').forEach(item => {
+        item.style.setProperty('--card-tilt-x', '0deg');
+        item.style.setProperty('--card-tilt-y', '0deg');
+      });
+      return;
+    }
+    const bounds = card.getBoundingClientRect();
+    const x = (event.clientX - bounds.left) / bounds.width - .5;
+    const y = (event.clientY - bounds.top) / bounds.height - .5;
+    card.style.setProperty('--card-tilt-x', `${x * 3}deg`);
+    card.style.setProperty('--card-tilt-y', `${y * -3}deg`);
+  }, { passive: true });
+  carouselViewport.addEventListener('pointerleave', () => {
+    carouselViewport.querySelectorAll('.carousel-slide').forEach(card => {
+      card.style.setProperty('--card-tilt-x', '0deg');
+      card.style.setProperty('--card-tilt-y', '0deg');
+    });
+  });
+}

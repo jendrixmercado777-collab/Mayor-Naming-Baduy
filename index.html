@@ -30,10 +30,21 @@
     </div>
     <span class="login-copyright">A SMALL SURPRISE, GATHERED WITH LOVE</span>
   </section>
+  <section class="welcome-screen" id="welcome-screen" aria-labelledby="welcome-title" aria-live="polite" hidden>
+    <div class="welcome-card">
+      <span class="welcome-flower" aria-hidden="true">✿</span>
+      <p class="welcome-kicker">A LITTLE NOTE FROM YOUR CLUB</p>
+      <h2 id="welcome-title">Welcome in,<br><em>Mayor Naming Baduy.</em></h2>
+      <p>We gathered a few favorite things for you.<br>Your birthday gallery is ready.</p>
+      <div class="welcome-loader" aria-hidden="true"><i></i><i></i><i></i></div>
+      <button id="welcome-continue" type="button">OPEN YOUR SURPRISE <span aria-hidden="true">→</span></button>
+    </div>
+    <p class="welcome-footnote">MADE WITH LOVE, JUST FOR YOU ✿</p>
+  </section>
   <div class="progress" aria-hidden="true"><span id="progress-bar"></span></div>
   <header class="topbar">
     <a class="brand" href="#top" aria-label="Birthday gallery home"><span class="brand-seal">A</span><span>ASHLEY’S<br>BIRTHDAY</span></a>
-    <nav aria-label="Main navigation"><a href="#gallery">MEMORIES</a><a href="#birthday-garden">FLOWERS</a><a href="#candle-section">WISH</a><a href="#letters">LETTERS</a></nav>
+    <nav aria-label="Main navigation"><a href="#about">ABOUT</a><a href="#gallery">MEMORIES</a><a href="#birthday-garden">FLOWERS</a><a href="#candle-section">WISH</a><a href="#letters">LETTERS</a></nav>
     <div class="header-actions"><button class="party-button" id="party-button" type="button"><span aria-hidden="true">✦</span> CELEBRATE</button><button class="sound-toggle" id="sound-toggle" type="button" aria-pressed="true" aria-label="Mute sound effects"><span aria-hidden="true">♫</span><span class="sound-label">SOUND ON</span></button></div>
   </header>
 
@@ -41,15 +52,21 @@
     <section class="hero" aria-labelledby="hero-title">
       <div class="hero-copy">
         <p class="eyebrow"><span class="live-dot"></span> A LITTLE SURPRISE FROM YOUR CLUB</p>
-        <h1 id="hero-title" aria-label="Happy Birthday, Our Mayor Ashley Vine Escorido!">Happy Birthday,<br><em>Our Mayor</em><br><span class="name-line">Ashley Vine Escorido!</span></h1>
+        <h1 id="hero-title" tabindex="-1" aria-label="Happy Birthday, Our Mayor Ashley Vine Escorido!">Happy Birthday,<br><em>Our Mayor</em><br><span class="name-line">Ashley Vine Escorido!</span></h1>
         <div class="hero-bottom"><p>Here’s to a year filled with laughter, good surprises, and people who love you.</p><a class="round-link" href="#gallery" aria-label="Explore the birthday memories">↓</a></div>
-        <p class="hero-joke">A birthday fit for Mayor Naming Baduy ✿</p>
+        <p class="hero-joke">A birthday fit for our Mayor ✿</p>
       </div>
       <div class="hero-art" aria-label="Selected club memories">
         <div class="photo photo-back"><img id="hero-photo-2" alt="A club memory from the gallery"></div>
         <div class="photo photo-front"><img id="hero-photo-1" alt="A club memory from the gallery"><span class="photo-caption">A FAVORITE MEMORY<br><b>GATHERED WITH LOVE</b></span></div>
         <span class="hero-doodle" aria-hidden="true">✿</span>
       </div>
+    </section>
+
+    <section class="gallery-ticker" aria-label="Birthday wishes"><span>HAPPY BIRTHDAY, MAYOR NAMING BADUY</span><span aria-hidden="true">✿</span><span>FROM YOUR FAVORITE PEOPLE</span><span aria-hidden="true">✿</span><span>HAPPY BIRTHDAY, MAYOR NAMING BADUY</span></section>
+
+    <section class="about-section" id="about">
+      <div class="section-wrap about-inner"><span class="about-flower" aria-hidden="true">✿</span><div><p class="eyebrow">A NOTE FROM THE CLUB</p><h2>Today, the gallery<br>is all <em>about you.</em></h2><p>Every photo holds a little piece of the laughter, friendship, and memories you’ve given us. We gathered them here to celebrate the one and only Mayor Naming Baduy.</p></div></div>
     </section>
 
     <section class="gallery-section" id="gallery">
@@ -67,7 +84,17 @@
       </div>
     </section>
 
+    <section class="compliment-section" aria-labelledby="compliment-title"><div class="section-wrap compliment-inner"><p class="eyebrow">A LITTLE REMINDER FROM YOUR CLUB</p><h2 id="compliment-title">You make ordinary days<br><em>feel like a celebration.</em></h2><p class="compliment-message" id="compliment-message" aria-live="polite">Tap below for a little love from all of us.</p><button class="compliment-button" id="compliment-button" type="button">A KIND WORD, PLEASE <span>✿</span></button></div></section>
+
     <section class="birthday-garden" id="birthday-garden">
+      <div class="garden-parallax" aria-hidden="true">
+        <span class="garden-shape garden-shape-left" data-depth=".12">✿</span>
+        <span class="garden-shape garden-shape-right" data-depth=".2">❀</span>
+        <span class="garden-leaf garden-leaf-one" data-depth=".3"></span>
+        <span class="garden-leaf garden-leaf-two" data-depth=".17"></span>
+        <span class="garden-glow garden-glow-one" data-depth=".08"></span>
+        <span class="garden-glow garden-glow-two" data-depth=".13"></span>
+      </div>
       <div class="section-wrap">
         <div class="section-kicker"><span>02 / THE BIRTHDAY GARDEN</span><span>GROWING WITH EVERY WISH</span></div>
         <div class="garden-heading"><div><p class="eyebrow">A GARDEN MADE BY HER PEOPLE</p><h2>LEAVE A FLOWER.<br>LEAVE A <em>WISH.</em></h2></div><p class="gallery-aside">Every friend adds a bloom<br>to her birthday bouquet.</p></div>
@@ -84,7 +111,7 @@
     <section class="candle-section" id="candle-section" aria-labelledby="candle-title">
       <div class="section-wrap">
         <div class="section-kicker"><span>03 / MAKE A WISH</span><span>A LITTLE LIGHT, JUST FOR YOU</span></div>
-        <div class="candle-layout"><div><p class="eyebrow">ONE CANDLE, ONE BIRTHDAY WISH</p><h2 id="candle-title">Make a wish.<br><em>Let it glow.</em></h2><p class="candle-intro">Tap the candle when you’re ready, Mayor Naming Baduy.</p></div><article class="candle-card"><button class="birthday-candle" id="birthday-candle" type="button" aria-label="Light the birthday candle" aria-pressed="false"><span class="candle-flame"></span><span class="candle-wick"></span><span class="candle-body"><i></i><i></i><i></i></span></button><p class="candle-message" id="candle-message" aria-live="polite">Tap the candle and make a wish.</p></article></div>
+        <div class="candle-layout"><div><p class="eyebrow">A LITTLE LIGHT FOR HER BIRTHDAY</p><h2 id="candle-title">Make a wish.<br><em>Let it glow.</em></h2><p class="candle-intro">Tap the lantern when you’re ready, Mayor Naming Baduy.</p></div><article class="candle-card lantern-card"><button class="birthday-lantern" id="birthday-lantern" type="button" aria-label="Light the birthday lantern" aria-pressed="false"><span class="lantern-scene" aria-hidden="true"><i class="lantern-glow"></i><i class="lantern-loop"></i><i class="lantern-top"></i><i class="lantern-glass"></i><i class="lantern-frame"></i><i class="lantern-flame"></i><i class="lantern-base"></i><i class="lantern-charm">✿</i></span></button><p class="wish-message" id="lantern-message" aria-live="polite">Tap the lantern and make a wish.</p></article></div>
       </div>
     </section>
 
@@ -92,8 +119,8 @@
       <div class="section-wrap">
         <div class="section-kicker"><span>04 / BIRTHDAY LETTERS</span><span>SEALED WITH LOVE, SAVED FOR LATER</span></div>
         <div class="letters-heading"><div><p class="eyebrow">NOTES FROM HER FAVORITE PEOPLE</p><h2>A FEW WORDS,<br>A WHOLE LOT OF <em>LOVE.</em></h2></div><p class="gallery-aside">Leave her a birthday wish<br>to open whenever she likes.</p></div>
-        <div class="letter-controls"><span id="letter-count">0 LETTERS IN THE BOX</span><div><button id="letters-left" type="button" aria-label="Scroll letters left">←</button><button id="letters-right" type="button" aria-label="Scroll letters right">→</button></div></div>
-        <div class="letters-rail" id="letters-rail" aria-label="Birthday letters"></div>
+        <p class="letter-count" id="letter-count">0 LETTERS IN THE BOX</p>
+        <div class="letters-grid" id="letters-grid" role="list" aria-label="Birthday letters"></div>
         <p class="letters-empty" id="letters-empty">The letter box is waiting for its first note. Be the friend who starts the happy tears. ♡</p>
         <form class="letter-form" id="letter-form">
           <div class="form-heading"><span>WRITE HER A LITTLE NOTE</span><span>A FEW WORDS TO KEEP</span></div>
@@ -105,7 +132,7 @@
       </div>
     </section>
 
-    <section class="closing"><span class="closing-star" aria-hidden="true">✿</span><p>FROM ALL OF US, WITH LOVE</p><h2>HAPPY BIRTHDAY,<br><em>ASHLEY VINE ESCORIDO.</em></h2><p class="closing-note">Keep being wonderfully, unmistakably you.</p></section>
+    <section class="closing"><div class="closing-confetti" id="closing-confetti" aria-hidden="true"></div><span class="closing-star" aria-hidden="true">✿</span><p>FROM ALL OF US, WITH LOVE</p><h2>HAPPY BIRTHDAY,<br><em>ASHLEY VINE ESCORIDO.</em></h2><p class="closing-note">Keep being wonderfully, unmistakably you.</p></section>
   </main>
 
   <footer><a class="brand" href="#top"><span class="brand-seal">A</span><span>ASHLEY’S<br>BIRTHDAY</span></a><span>MADE WITH LOVE BY THE CLUB</span><a href="#top">BACK TO TOP ↑</a></footer>
@@ -117,6 +144,8 @@
   <audio id="pop-sound" src="confetti-pop-sound-effect.mp3" preload="auto"></audio>
   <div class="toast" id="toast" role="status" aria-live="polite">THE MAYOR HAS BEEN NOTIFIED (IN SPIRIT) ✳</div>
   <div class="party-poppers" id="party-poppers" aria-hidden="true"><span class="party-popper party-popper-left">✦</span><span class="party-popper party-popper-right">✦</span></div>
+  <div class="floating-petals" id="floating-petals" aria-hidden="true"></div>
+  <div class="cursor-petals" id="cursor-petals" aria-hidden="true"></div>
   <script src="script.js" defer></script>
 </body>
 </html>
