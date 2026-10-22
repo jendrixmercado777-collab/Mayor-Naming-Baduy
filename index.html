@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#fbfaf5">
+  <meta name="description" content="A birthday gallery walk filled with flowers, favorite memories, birthday wishes, and letters for Ashley Vine Escorido.">
+  <title>Happy Birthday, Ashley Vine Escorido!</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700;800&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600;1,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="login-locked">
+  <section class="login-screen" id="login-screen" aria-labelledby="login-title">
+    <div class="login-card">
+      <div class="login-brand"><span class="brand-seal">MB</span><span>CLUB<br>MEMBERSHIP</span></div>
+      <p class="login-kicker">A PRIVATE CLUB EXHIBITION</p>
+      <h1 id="login-title">Welcome back.</h1>
+      <p class="login-intro">Sign in to continue to the gallery.</p>
+      <form id="login-form">
+        <label for="login-username">USERNAME</label>
+        <input id="login-username" name="username" autocomplete="username" required>
+        <label for="login-password">PASSWORD</label>
+        <input id="login-password" name="password" type="password" autocomplete="current-password" required>
+        <p class="login-error" id="login-error" role="alert" hidden>That username or password didn’t work. Please try again.</p>
+        <button type="submit">SIGN IN <span>→</span></button>
+      </form>
+      <p class="login-footnote">WITH LOVE FROM THE CLUB ✿</p>
+    </div>
+    <span class="login-copyright">A SMALL SURPRISE, GATHERED WITH LOVE</span>
+  </section>
+  <div class="progress" aria-hidden="true"><span id="progress-bar"></span></div>
+  <header class="topbar">
+    <a class="brand" href="#top" aria-label="Birthday gallery home"><span class="brand-seal">A</span><span>ASHLEY’S<br>BIRTHDAY</span></a>
+    <nav aria-label="Main navigation"><a href="#gallery">MEMORIES</a><a href="#birthday-garden">FLOWERS</a><a href="#candle-section">WISH</a><a href="#letters">LETTERS</a></nav>
+    <div class="header-actions"><button class="party-button" id="party-button" type="button"><span aria-hidden="true">✦</span> CELEBRATE</button><button class="sound-toggle" id="sound-toggle" type="button" aria-pressed="true" aria-label="Mute sound effects"><span aria-hidden="true">♫</span><span class="sound-label">SOUND ON</span></button></div>
+  </header>
+
+  <main id="top">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <p class="eyebrow"><span class="live-dot"></span> A LITTLE SURPRISE FROM YOUR CLUB</p>
+        <h1 id="hero-title" aria-label="Happy Birthday, Our Mayor Ashley Vine Escorido!">Happy Birthday,<br><em>Our Mayor</em><br><span class="name-line">Ashley Vine Escorido!</span></h1>
+        <div class="hero-bottom"><p>Here’s to a year filled with laughter, good surprises, and people who love you.</p><a class="round-link" href="#gallery" aria-label="Explore the birthday memories">↓</a></div>
+        <p class="hero-joke">A birthday fit for Mayor Naming Baduy ✿</p>
+      </div>
+      <div class="hero-art" aria-label="Selected club memories">
+        <div class="photo photo-back"><img id="hero-photo-2" alt="A club memory from the gallery"></div>
+        <div class="photo photo-front"><img id="hero-photo-1" alt="A club memory from the gallery"><span class="photo-caption">A FAVORITE MEMORY<br><b>GATHERED WITH LOVE</b></span></div>
+        <span class="hero-doodle" aria-hidden="true">✿</span>
+      </div>
+    </section>
+
+    <section class="gallery-section" id="gallery">
+      <div class="section-wrap">
+        <div class="section-kicker"><span>01 / THE PHOTO ALBUM</span><span>EVERY FRAME, A LITTLE WISH</span></div>
+        <div class="gallery-heading"><div><p class="eyebrow">A FEW FAVORITES FROM THE CLUB</p><h2>OUR SHARED<br><em>MEMORIES</em></h2></div><p class="gallery-aside"><strong id="photo-count">99</strong> moments<br>collected with love.</p></div>
+        <div class="carousel-shell" role="region" aria-roledescription="carousel" aria-label="Birthday photo carousel">
+          <button class="carousel-arrow carousel-previous" id="carousel-previous" type="button" aria-label="Previous photo">←</button>
+          <div class="carousel-viewport" id="carousel-viewport" tabindex="0" role="group" aria-label="Use left and right arrow keys to browse photos">
+            <div class="gallery-carousel" id="gallery-grid" aria-live="polite" aria-atomic="true"></div>
+          </div>
+          <button class="carousel-arrow carousel-next" id="carousel-next" type="button" aria-label="Next photo">→</button>
+        </div>
+        <div class="carousel-footer"><div class="carousel-pagination" id="carousel-pagination" role="group" aria-label="Choose a photo"></div><span class="carousel-count" id="carousel-count" aria-live="off"></span><button class="autoplay-toggle" id="autoplay-toggle" type="button" aria-pressed="true" aria-label="Pause automatic carousel"><span aria-hidden="true">Ⅱ</span> PAUSE</button></div>
+      </div>
+    </section>
+
+    <section class="birthday-garden" id="birthday-garden">
+      <div class="section-wrap">
+        <div class="section-kicker"><span>02 / THE BIRTHDAY GARDEN</span><span>GROWING WITH EVERY WISH</span></div>
+        <div class="garden-heading"><div><p class="eyebrow">A GARDEN MADE BY HER PEOPLE</p><h2>LEAVE A FLOWER.<br>LEAVE A <em>WISH.</em></h2></div><p class="gallery-aside">Every friend adds a bloom<br>to her birthday bouquet.</p></div>
+        <div class="bouquet-card">
+          <div class="bouquet-stage" id="bouquet-stage" aria-label="A bouquet of birthday wishes"></div>
+          <div class="bouquet-note" id="bouquet-note" aria-live="polite"><span class="note-flower">✿</span><span id="bouquet-note-copy">Choose a flower to read its birthday wish.</span></div>
+          <p class="bouquet-empty" id="bouquet-empty">The bouquet is waiting for its first bloom.</p>
+          <form class="wish-form" id="wish-form"><label><span>YOUR NAME</span><input name="name" maxlength="40" placeholder="Your name" required></label><label><span>A BIRTHDAY WISH</span><input name="wish" maxlength="180" placeholder="Write her a little wish…" required></label><button type="submit">ADD YOUR FLOWER <span>✿</span></button></form>
+          <p class="bouquet-storage">Wishes are saved in this browser.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="candle-section" id="candle-section" aria-labelledby="candle-title">
+      <div class="section-wrap">
+        <div class="section-kicker"><span>03 / MAKE A WISH</span><span>A LITTLE LIGHT, JUST FOR YOU</span></div>
+        <div class="candle-layout"><div><p class="eyebrow">ONE CANDLE, ONE BIRTHDAY WISH</p><h2 id="candle-title">Make a wish.<br><em>Let it glow.</em></h2><p class="candle-intro">Tap the candle when you’re ready, Mayor Naming Baduy.</p></div><article class="candle-card"><button class="birthday-candle" id="birthday-candle" type="button" aria-label="Light the birthday candle" aria-pressed="false"><span class="candle-flame"></span><span class="candle-wick"></span><span class="candle-body"><i></i><i></i><i></i></span></button><p class="candle-message" id="candle-message" aria-live="polite">Tap the candle and make a wish.</p></article></div>
+      </div>
+    </section>
+
+    <section class="letters-section" id="letters">
+      <div class="section-wrap">
+        <div class="section-kicker"><span>04 / BIRTHDAY LETTERS</span><span>SEALED WITH LOVE, SAVED FOR LATER</span></div>
+        <div class="letters-heading"><div><p class="eyebrow">NOTES FROM HER FAVORITE PEOPLE</p><h2>A FEW WORDS,<br>A WHOLE LOT OF <em>LOVE.</em></h2></div><p class="gallery-aside">Leave her a birthday wish<br>to open whenever she likes.</p></div>
+        <div class="letter-controls"><span id="letter-count">0 LETTERS IN THE BOX</span><div><button id="letters-left" type="button" aria-label="Scroll letters left">←</button><button id="letters-right" type="button" aria-label="Scroll letters right">→</button></div></div>
+        <div class="letters-rail" id="letters-rail" aria-label="Birthday letters"></div>
+        <p class="letters-empty" id="letters-empty">The letter box is waiting for its first note. Be the friend who starts the happy tears. ♡</p>
+        <form class="letter-form" id="letter-form">
+          <div class="form-heading"><span>WRITE HER A LITTLE NOTE</span><span>A FEW WORDS TO KEEP</span></div>
+          <div class="form-row"><label for="sender-name">YOUR NAME</label><input id="sender-name" name="sender" maxlength="50" placeholder="The message sender" required></div>
+          <div class="form-row"><label for="message-text">YOUR MESSAGE</label><textarea id="message-text" name="message" maxlength="1200" rows="4" placeholder="Dear Mayor Naming Baduy…" required></textarea></div>
+          <div class="form-submit"><span>Saved in this browser so she can read it later.</span><button type="submit">SEAL THE ENVELOPE <span>♡</span></button></div>
+        </form>
+        <p class="music-note">♫ ADD YOUR SONG: Put an audio file in <code>assets/music/</code> and set <code>LETTER_MUSIC</code> in <code>script.js</code>. She can play or pause it while reading.</p>
+      </div>
+    </section>
+
+    <section class="closing"><span class="closing-star" aria-hidden="true">✿</span><p>FROM ALL OF US, WITH LOVE</p><h2>HAPPY BIRTHDAY,<br><em>ASHLEY VINE ESCORIDO.</em></h2><p class="closing-note">Keep being wonderfully, unmistakably you.</p></section>
+  </main>
+
+  <footer><a class="brand" href="#top"><span class="brand-seal">A</span><span>ASHLEY’S<br>BIRTHDAY</span></a><span>MADE WITH LOVE BY THE CLUB</span><a href="#top">BACK TO TOP ↑</a></footer>
+
+  <dialog class="lightbox" id="lightbox" aria-label="Photo viewer"><button class="lightbox-close" id="lightbox-close" aria-label="Close photo viewer">×</button><button class="lightbox-arrow prev" id="lightbox-prev" aria-label="Previous photo">←</button><figure><img id="lightbox-image" alt=""><figcaption id="lightbox-caption"></figcaption></figure><button class="lightbox-arrow next" id="lightbox-next" aria-label="Next photo">→</button><span class="lightbox-count" id="lightbox-count"></span></dialog>
+  <dialog class="letter-dialog" id="letter-dialog" aria-label="Birthday letter"><button class="letter-close" id="letter-close" type="button" aria-label="Close letter">×</button><div class="letter-paper"><div class="letter-paper-top"><span>THE MAYOR’S MAIL</span><span id="open-letter-number">NO. 001</span></div><span class="letter-big-heart" aria-hidden="true">♥</span><p class="letter-greeting">To Mayor Naming Baduy,</p><p class="letter-body" id="open-letter-body"></p><p class="surprise-hint" id="surprise-hint" hidden>You’ve opened five letters. Close this one for a little birthday surprise ✿</p><div class="letter-signoff"><span>With love and questionable amounts of affection,</span><strong id="open-letter-sender"></strong></div><div class="letter-paper-footer"><span>TO MAYOR NAMING BADUY</span><span>FROM <b id="open-letter-from"></b></span></div></div><button class="music-toggle" id="music-toggle" type="button" aria-pressed="false">♫ <span>PLAY THE BIRTHDAY SONG</span></button></dialog>
+  <dialog class="surprise-dialog" id="surprise-dialog" aria-labelledby="surprise-title"><button class="surprise-close" id="surprise-close" type="button" aria-label="Close birthday surprise">×</button><div class="surprise-content"><p class="eyebrow">A LITTLE SURPRISE, JUST FOR YOU</p><span class="surprise-flower" aria-hidden="true">✿</span><h2 id="surprise-title">Five letters,<br><em>one big love.</em></h2><img id="surprise-image" alt="A favorite memory from the birthday gallery"><p>There are so many people who are glad you’re in their lives. Happy birthday, Mayor Naming Baduy.</p><button class="surprise-music" id="surprise-music" type="button">♫ PLAY YOUR BIRTHDAY SONG</button></div></dialog>
+  <audio id="letter-music" preload="none" loop></audio>
+  <audio id="pop-sound" src="confetti-pop-sound-effect.mp3" preload="auto"></audio>
+  <div class="toast" id="toast" role="status" aria-live="polite">THE MAYOR HAS BEEN NOTIFIED (IN SPIRIT) ✳</div>
+  <div class="party-poppers" id="party-poppers" aria-hidden="true"><span class="party-popper party-popper-left">✦</span><span class="party-popper party-popper-right">✦</span></div>
+  <script src="script.js" defer></script>
+</body>
+</html>
